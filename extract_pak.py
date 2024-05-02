@@ -2,7 +2,7 @@ import os
 
 # Define the command to execute
 command_template = '.\\TOOLS\\Lucksystem\\LuckSystem.exe pak extract -i {} -o {} --all {}'
-extracted_root = 'EXTRACTED\\'
+extracted_root = 'EXTRACTED\\CZ'
 
 # Function to traverse directories recursively
 def process_files(directory):
