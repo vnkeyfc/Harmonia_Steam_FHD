@@ -1,3 +1,5 @@
-Lucksystem: Ex/Im cz0, cz1, cz3; Ex cz2
-Lucasystem: Im/Ex cz4
-Hillya51: Im cz2
+Lucksystem: Export/Import cz0, cz1, cz3; Export cz2
+
+Lucasystem: Import/Export cz4
+
+Hillya51: Import cz2
