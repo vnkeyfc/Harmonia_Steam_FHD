@@ -6,14 +6,20 @@ command_luck = '.\\TOOLS\\Lucksystem\\LuckSystem.exe image export -i {} -o {}.pn
 command_luca = '.\\TOOLS\\LucaSystem\\lucasystemtools.exe -t cz4 -m export -f {} -o '
 extracted_root = 'EXTRACTED\\IMG'
 
-def check_lucksystem(file):
-    file.seek(1)
-    data = file.read(2)
-    header = struct.unpack('<BB', data)
-    print(header)
-    if header == (90,49) or header == (90,50) or header == (90,52): #cz1 cz2 or cz4
-        return True
-    return False
+def check_lucksystem(file_path):
+    with open(file_path, 'r+b') as file:
+        file.seek(1)
+        data = file.read(2)
+        header = struct.unpack('<BB', data)
+        if header == (90,48):          #cz0
+            return 0
+        if header == (90,49):          #cz1
+            return 1
+        elif header == (90,50):        #cz2
+            return 2
+        elif header == (90,51):        #cz3
+            return 3
+        return -1                      #cz4
 
 # Function to traverse directories recursively
 def process_files(directory):
@@ -21,22 +27,24 @@ def process_files(directory):
         for file in files:
                 # Form the input and output file paths
                 input_file = os.path.join(root, file)
-                            # Get the parent folder of the current file
+                # Get the parent folder of the current file
                 parent_folder = os.path.basename(os.path.dirname(input_file))
             
                 # Form the output file path
                 output_folder = os.path.join(extracted_root, parent_folder)
-                output_file = output_folder + '\\' + file
+                output_file = output_folder + '\\' + str(file)
                 if not os.path.exists(output_folder):
                     os.makedirs(output_folder)
                     print(f"Folder '{output_folder}' created.")
                 # Execute the command
-                if check_lucksystem(file):
+                cz = check_lucksystem(input_file)
+                if cz >= 0:
                     command = command_luck.format(input_file, output_file)
+                    os.system(command)
                 else:
-                    command = command_luca.format(input_file, output_file)
-                print(command)
-                os.system(command)
+                    command = command_luca.format(input_file)
+                    os.system(command)
+                    os.replace(input_file,output_file)
                 time.sleep(0.25)
                 
 
