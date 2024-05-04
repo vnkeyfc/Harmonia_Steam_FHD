@@ -25,6 +25,7 @@ def check_lucksystem(file_path):
 def process_files(directory):
     for root, dirs, files in os.walk(directory):
         for file in files:
+            if file == "CGGALLERY_CH01_002" or 1:    
                 # Form the input and output file paths
                 input_file = os.path.join(root, file)
                 # Get the parent folder of the current file
@@ -40,12 +41,14 @@ def process_files(directory):
                 cz = check_lucksystem(input_file)
                 if cz >= 0:
                     command = command_luck.format(input_file, output_file)
+                    print("==== {} =====".format(input_file))
                     os.system(command)
                 else:
                     command = command_luca.format(input_file)
+                    print("==== {} =====".format(input_file))
                     os.system(command)
                     os.replace(input_file,output_file)
-                time.sleep(0.25)
+                time.sleep(0.1)
                 
 
 # Main function to start processing from the current directory
